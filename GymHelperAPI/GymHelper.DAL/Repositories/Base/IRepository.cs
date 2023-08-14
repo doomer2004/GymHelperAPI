@@ -8,13 +8,14 @@ public interface IRepository<TEntity> where TEntity : class
 
     int Add(TEntity entity, bool persist = true);
     Task<bool> AddAsync(TEntity entity, bool persist = true);
-    Task<TEntity?> FindAsync(int id);
+    Task<TEntity?> FindAsync(string name);
     Task<bool> AddRangeAsync(IEnumerable<TEntity> entities, bool persist = true);
     Task<bool> UpdateAsync(TEntity entity, bool persist = true);
     Task<bool> DeleteAsync(TEntity entity, bool persist = true);
     
     int SaveChanges();
     Task<int> SaveChangesAsync();
+    IEnumerable<TEntity> GetAll();
 }
     
     

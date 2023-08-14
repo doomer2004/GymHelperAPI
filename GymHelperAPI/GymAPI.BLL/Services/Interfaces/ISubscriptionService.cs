@@ -1,11 +1,12 @@
 ﻿using GymAPI.Common.DTO;
-
+using GymHelper.DAL.Entities;
 namespace GymAPI.BLL.Services.Interfaces;
 
 public interface ISubscriptionService
 {
+    Task<SubscriptionDTO> AddSubscription(Subscription subscription);
     Task<SubscriptionDTO> UpdateSubscription(string type, SubscriptionDTO subscription);
-    Task<SubscriptionDTO> DeleteSubscription(string type);
-    Task<SubscriptionDTO> GetSubscriptionByType(string type);
-    Task<SubscriptionDTO> GetAllSubscription();
+    Task<bool> DeleteSubscription(string type);
+    Task<SubscriptionDTO?> GetSubscriptionByType(string type);
+    List<SubscriptionDTO> GetAllSubscription();
 }

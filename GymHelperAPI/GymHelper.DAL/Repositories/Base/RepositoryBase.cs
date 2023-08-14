@@ -33,9 +33,9 @@ public abstract class RepositoryBase<TEntity> : IRepository<TEntity> where TEnti
         return persist && await SaveChangesAsync() > 0;
     }
 
-    public virtual async Task<TEntity?> FindAsync(int id)
+    public virtual async Task<TEntity?> FindAsync(string name)
     {
-        return await Table.FindAsync(id);
+        return await Table.FindAsync(name);
     }
     
     public virtual async Task<bool> UpdateAsync(TEntity entity, bool persist = true)
@@ -73,5 +73,10 @@ public abstract class RepositoryBase<TEntity> : IRepository<TEntity> where TEnti
         {
             throw new Exception("An error occurred updating the database", e);
         }
+    }
+
+    public virtual IEnumerable<TEntity> GetAll()
+    {
+        return Table;
     }
 }
