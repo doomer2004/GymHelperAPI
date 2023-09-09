@@ -7,11 +7,12 @@ using GymAPI.Common.DTO;
 using GymAPI.Common.Models;
 using GymHelper.DAL.Entities;
 using GymHelper.DAL.Repositories;
+using GymHelper.DAL.Repositories.Base;
 using Microsoft.IdentityModel.Tokens;
 
 namespace GymAPI.BLL.Services;
 
-public class UserService : IAuthService
+public class AuthService : IAuthService
 {
     private readonly UserRepository _repository;
     private readonly IPasswordHasher _hasher;

@@ -7,6 +7,9 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="FluentValidation" Version="11.7.1" />
+        <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.7.1" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.9" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.9" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.9" />
@@ -18,6 +21,13 @@
       <Folder Include="Controllers\" />
       <Folder Include="GymAPI\" />
       <Folder Include="UnitTest\" />
+    </ItemGroup>
+
+
+    <ItemGroup>
+      <ProjectReference Include="..\GymAPI.BLL\GymAPI.BLL.csproj" />
+      <ProjectReference Include="..\GymAPI.Common\GymAPI.Common.csproj" />
+      <ProjectReference Include="..\GymHelper.DAL\GymHelper.DAL.csproj" />
     </ItemGroup>
 
 </Project>

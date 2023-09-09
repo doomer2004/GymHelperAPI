@@ -2,7 +2,9 @@
 
 namespace GymHelper.DAL.Repositories.Base;
 
-public interface IRepository<TEntity> where TEntity : class
+public interface IRepository<TEntity,in TKey>
+    where TEntity : class
+    where TKey : IEquatable<TKey> 
 {
     DbSet<TEntity> Table { get; }
 

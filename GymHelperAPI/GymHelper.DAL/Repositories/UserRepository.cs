@@ -5,11 +5,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GymHelper.DAL.Repositories;
 
-public class UserRepository : RepositoryBase<User>
+public class UserRepository : RepositoryBase<User, int>
 {
     public UserRepository(Context context) : base(context)
     {
-        
     }
 
     public async Task<User?> FindByLoginAsync(string login)

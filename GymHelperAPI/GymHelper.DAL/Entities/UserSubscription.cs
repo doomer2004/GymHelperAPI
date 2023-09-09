@@ -2,13 +2,13 @@
 
 namespace GymHelper.DAL.Entities;
 
-public class UserSubscription : BaseEntity
+public class UserSubscription : BaseEntity<Guid>
 {
-    public DateTime SubscriptionStart { get; set; }
-    public DateTime SubscriptionEnd { get; set; }
+    public DateTimeOffset SubscriptionStart { get; set; }
+    public DateTimeOffset SubscriptionEnd { get; set; }
     
-    public int UserId { get; set; }
-    public int SubscriptionId { get; set; }
+    public Guid UserId { get; set; }
+    public Guid SubscriptionId { get; set; }
     
     [ForeignKey(nameof(UserId))]
     public User User { get; set; }

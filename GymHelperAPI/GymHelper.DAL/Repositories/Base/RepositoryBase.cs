@@ -3,9 +3,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GymHelper.DAL.Repositories.Base;
 
-public abstract class RepositoryBase<TEntity> : IRepository<TEntity> where TEntity : class
+public class RepositoryBase<TEntity, TKey> : IRepository<TEntity, TKey> 
+    where TEntity : class
+    where TKey : IEquatable<TKey>
 {
-    public Context Context { get; }
+    private Context Context { get; }
     public DbSet<TEntity> Table { get; }
 
 

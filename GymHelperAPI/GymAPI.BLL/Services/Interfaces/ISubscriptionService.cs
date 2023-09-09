@@ -4,8 +4,8 @@ namespace GymAPI.BLL.Services.Interfaces;
 
 public interface ISubscriptionService
 {
-    Task<SubscriptionDTO> AddSubscription(Subscription subscription);
-    Task<SubscriptionDTO> UpdateSubscription(string type, SubscriptionDTO subscription);
+    Task<SubscriptionDTO> AddSubscription(SubscriptionDTO subscription);
+    Task<SubscriptionDTO> UpdateSubscription(string type, UpdateSubscriptionDTO subscription);
     Task<bool> DeleteSubscription(string type);
     Task<SubscriptionDTO?> GetSubscriptionByType(string type);
     List<SubscriptionDTO> GetAllSubscription();

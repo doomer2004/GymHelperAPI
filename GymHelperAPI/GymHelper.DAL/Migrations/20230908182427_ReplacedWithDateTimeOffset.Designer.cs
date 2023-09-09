@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GymHelper.DAL.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20230803201639_Initial")]
-    partial class Initial
+    [Migration("20230908182427_ReplacedWithDateTimeOffset")]
+    partial class ReplacedWithDateTimeOffset
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,15 +27,16 @@ namespace GymHelper.DAL.Migrations
 
             modelBuilder.Entity("GymHelper.DAL.Entities.Subscription", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Type")
                         .IsRequired()
@@ -48,11 +49,9 @@ namespace GymHelper.DAL.Migrations
 
             modelBuilder.Entity("GymHelper.DAL.Entities.User", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -81,23 +80,21 @@ namespace GymHelper.DAL.Migrations
 
             modelBuilder.Entity("GymHelper.DAL.Entities.UserSubscription", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<DateTimeOffset>("SubscriptionEnd")
+                        .HasColumnType("datetimeoffset");
 
-                    b.Property<DateTime>("SubscriptionEnd")
-                        .HasColumnType("datetime2");
+                    b.Property<Guid>("SubscriptionId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("SubscriptionId")
-                        .HasColumnType("int");
+                    b.Property<DateTimeOffset>("SubscriptionStart")
+                        .HasColumnType("datetimeoffset");
 
-                    b.Property<DateTime>("SubscriptionStart")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
