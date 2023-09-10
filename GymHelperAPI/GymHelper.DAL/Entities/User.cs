@@ -8,5 +8,7 @@ public class User : BaseEntity<Guid>
     public string Login { get; set; } = string.Empty;
     public string PasswordHash { get; set; } = string.Empty;
 
+    public string Salt { get; set; }
+
     public List<UserSubscription> UserSubscriptions { get; set; }
 }

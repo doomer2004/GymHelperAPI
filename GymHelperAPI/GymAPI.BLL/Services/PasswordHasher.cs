@@ -2,8 +2,8 @@
 
 public class PasswordHasher : IPasswordHasher
 {
-    public string HashPassword(string password)
+    public string HashPassword(string password, string salt)
     {
-        return BCrypt.Net.BCrypt.HashPassword(password);
+        return BCrypt.Net.BCrypt.HashPassword(password, salt);
     }
 }

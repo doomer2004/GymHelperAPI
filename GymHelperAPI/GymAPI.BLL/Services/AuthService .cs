@@ -8,22 +8,30 @@ using GymAPI.Common.Models;
 using GymHelper.DAL.Entities;
 using GymHelper.DAL.Repositories;
 using GymHelper.DAL.Repositories.Base;
+using GymHelper.DAL.Repositories.Interfaces;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace GymAPI.BLL.Services;
 
 public class AuthService : IAuthService
 {
-    private readonly UserRepository _repository;
+    private readonly IUserRepository _repository;
     private readonly IPasswordHasher _hasher;
     private readonly JwtSettings _settings;
-    
-    
+
+    public AuthService(IUserRepository repository, IPasswordHasher hasher,  IOptions<JwtSettings> settings)
+    {
+        _repository = repository;
+        _hasher = hasher;
+        _settings = settings.Value;
+    }
+
     public async Task<AuthSuccessDTO> LoginAsync(LoginUserDTO user)
     {
-        string hashedPassword = _hasher.HashPassword(user.Password);
+        
         var existingUser = await _repository.FindByLoginAsync(user.Login);
-
+        var hashedPassword = _hasher.HashPassword(user.Password, existingUser.Salt);
         if (existingUser == null)
         {
             throw new KeyNotFoundException(user.Login);
@@ -32,14 +40,14 @@ public class AuthService : IAuthService
         {
             throw new UnauthorizedAccessException(user.Login);
         }
-
+        
         return new AuthSuccessDTO(GenerateJwtToken(existingUser));
 
     }
 
     public async Task<AuthSuccessDTO> RegisterAsync(RegisterUserDTO user)
     {
-        string hashedPassword = _hasher.HashPassword(user.Password);
+        var hashedPassword = _hasher.HashPassword(user.Password, BCrypt.Net.BCrypt.GenerateSalt(12));
         var existingUser = await _repository.FindByLoginAsync(user.Login);
 
         if (existingUser != null)
@@ -49,8 +57,12 @@ public class AuthService : IAuthService
 
         var newUser = new User()
         {
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            Email = user.Email,
             Login = user.Login,
             PasswordHash = hashedPassword,
+            
         };
         _repository.Add(newUser);
 

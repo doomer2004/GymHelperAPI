@@ -24,8 +24,8 @@ builder.Services.AddAutoMapper(typeof(SubscriptionProfile));
 builder.Services.AddDbContext<Context>();
 
 builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
-builder.Services.AddScoped<UserRepository>();
-builder.Services.AddScoped<UserSubscriptionRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserSubscriptionRepository, UserSubscriptionRepository>();
 
 builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -62,7 +62,7 @@ builder.Services.AddSwaggerGen(c => {
         }
     );
 });
-
+//builder.Configuration.AddJsonFile("appsettings.json", optional: false);
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options => {

@@ -1,11 +1,12 @@
 ﻿using GymHelper.DAL.EF;
 using GymHelper.DAL.Entities;
 using GymHelper.DAL.Repositories.Base;
+using GymHelper.DAL.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace GymHelper.DAL.Repositories;
 
-public class UserRepository : RepositoryBase<User, int>
+public class UserRepository : RepositoryBase<User, int>, IUserRepository
 {
     public UserRepository(Context context) : base(context)
     {
