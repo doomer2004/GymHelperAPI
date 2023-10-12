@@ -1,13 +1,11 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
-using System.Net.Sockets;
 using System.Security.Claims;
 using System.Text;
 using GymAPI.BLL.Services.Interfaces;
 using GymAPI.Common.DTO;
 using GymAPI.Common.Models;
 using GymHelper.DAL.Entities;
-using GymHelper.DAL.Repositories;
-using GymHelper.DAL.Repositories.Base;
+
 using GymHelper.DAL.Repositories.Interfaces;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -47,7 +45,8 @@ public class AuthService : IAuthService
 
     public async Task<AuthSuccessDTO> RegisterAsync(RegisterUserDTO user)
     {
-        var hashedPassword = _hasher.HashPassword(user.Password, BCrypt.Net.BCrypt.GenerateSalt(12));
+        var salt = BCrypt.Net.BCrypt.GenerateSalt(12);
+        var hashedPassword = _hasher.HashPassword(user.Password, salt);
         var existingUser = await _repository.FindByLoginAsync(user.Login);
 
         if (existingUser != null)
@@ -62,10 +61,9 @@ public class AuthService : IAuthService
             Email = user.Email,
             Login = user.Login,
             PasswordHash = hashedPassword,
-            
+            Salt = salt
         };
         _repository.Add(newUser);
-
         return new AuthSuccessDTO(GenerateJwtToken(newUser));
     }
 
