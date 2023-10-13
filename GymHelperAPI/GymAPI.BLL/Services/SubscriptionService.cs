@@ -4,6 +4,7 @@ using GymAPI.Common.DTO;
 using GymHelper.DAL.Entities;
 using GymHelper.DAL.Repositories;
 using GymHelper.DAL.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace GymAPI.BLL.Services;
 
@@ -21,16 +22,17 @@ public class SubscriptionService : ISubscriptionService
     public async Task<SubscriptionDTO> AddSubscription(SubscriptionDTO subscription)
     {
         var entity = _mapper.Map<Subscription>(subscription);
-        if (await _repository.Table.FindAsync(entity.Type) != null) 
-            throw new InvalidOperationException("Entity with such key already exists in database");
-        
+        if (await _repository.Table.AnyAsync(s => s.Type == entity.Type))
+        {
+            throw new InvalidOperationException($"Subscription with type {entity.Type} already exists");
+        }
         await _repository.AddAsync(entity);
         return _mapper.Map<SubscriptionDTO>(entity);
     }
 
     public async Task<SubscriptionDTO> UpdateSubscription(string type, UpdateSubscriptionDTO subscription)
     {
-        var entity = await _repository.FindAsync(type);
+        var entity = await _repository.Table.FirstOrDefaultAsync(s => s.Type == type);
 
         if (entity == null)
         {
@@ -45,7 +47,7 @@ public class SubscriptionService : ISubscriptionService
 
     public async Task<bool> DeleteSubscription(string type)
     {
-        var subscription = await _repository.FindAsync(type);
+        var subscription = await _repository.Table.FirstOrDefaultAsync(s => s.Type == type);
 
         if (subscription == null) 
             return false;
@@ -55,7 +57,7 @@ public class SubscriptionService : ISubscriptionService
 
     public async Task<SubscriptionDTO?> GetSubscriptionByType(string type)
     {
-        var subscription = await _repository.FindAsync(type);
+        Subscription? subscription = await _repository.Table.FirstOrDefaultAsync(s => s.Type == type);
         return subscription != null ? _mapper.Map<SubscriptionDTO>(subscription) : null;
     }
 

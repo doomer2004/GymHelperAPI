@@ -4,6 +4,7 @@ using GymHelper.DAL.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GymHelperAPI.Controllers;
+
 [Route("/")]
 [ApiController]
 public class SubscriptionController : ControllerBase
@@ -21,8 +22,7 @@ public class SubscriptionController : ControllerBase
         try
         {
             var result = await _subscriptionService.AddSubscription(subscription);
-            return CreatedAtAction(nameof(GetSubscriptionByType),
-                new {name = result.Type}, result);
+            return CreatedAtAction(nameof(GetSubscriptionByType), new {type = result.Type}, result);
         }
         catch (Exception e)
         {
@@ -35,7 +35,7 @@ public class SubscriptionController : ControllerBase
     {
         return Ok(_subscriptionService.GetAllSubscription());
     }
-    
+
     [HttpGet("subscription/{type}")]
     public async Task<IActionResult> GetSubscriptionByType(string type)
     {
@@ -65,5 +65,4 @@ public class SubscriptionController : ControllerBase
     {
         return Ok(await _subscriptionService.DeleteSubscription(type));
     }
-    
 }
